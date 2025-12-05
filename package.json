@@ -1,0 +1,42 @@
+{
+  "name": "cardboard-dreamz",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "lint": "eslint",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio",
+    "deploy:prepare": "npm run build && mkdir -p deploy && cp -r .next package.json package-lock.json prisma .env.example deploy/ && cp -r src deploy/ && cp next.config.ts deploy/ && cp tsconfig.json deploy/",
+    "deploy:upload": "scp -r deploy/* yourusername@yourdomain.com:~/cardboard-dreamz/",
+    "deploy:vercel": "npx vercel --prod",
+    "deploy:netlify": "npx netlify-cli deploy --prod --dir=.next"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "@types/bcryptjs": "^2.4.6",
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.2.3",
+    "mysql2": "^3.15.3",
+    "next": "16.0.7",
+    "prisma": "^5.22.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.7",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vercel": "^49.1.0"
+  }
+}
