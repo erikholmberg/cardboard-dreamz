@@ -1,3 +1,8 @@
+import Link from "next/link";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+
 interface CardProps {
   id: number;
   name: string;
@@ -10,7 +15,7 @@ interface CardProps {
   onAddToCollection?: (cardId: number) => void;
 }
 
-export default function Card({
+export default function TradingCard({
   id,
   name,
   setName,
@@ -22,8 +27,8 @@ export default function Card({
   onAddToCollection,
 }: CardProps) {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-      <div className="aspect-[3/4] bg-gray-200 flex items-center justify-center">
+    <Card className="overflow-hidden hover:shadow-md transition-shadow">
+      <div className="aspect-[3/4] bg-muted flex items-center justify-center">
         {imageUrl ? (
           <img
             src={imageUrl}
@@ -31,51 +36,49 @@ export default function Card({
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="text-gray-400 text-center">
-            <div className="w-16 h-16 mx-auto mb-2 bg-gray-300 rounded"></div>
-            <p>Card Image</p>
+          <div className="text-muted-foreground text-center">
+            <div className="w-16 h-16 mx-auto mb-2 bg-muted-foreground/20 rounded"></div>
+            <p className="text-sm">Card Image</p>
           </div>
         )}
       </div>
-      <div className="p-4">
-        <h3 className="font-semibold text-lg mb-1">{name}</h3>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-lg leading-tight">{name}</CardTitle>
         {(setName || cardNumber) && (
-          <p className="text-gray-600 text-sm mb-1">
+          <p className="text-muted-foreground text-sm">
             {setName} {cardNumber && `• ${cardNumber}`}
           </p>
         )}
         {rarity && (
-          <p className="text-blue-600 text-sm font-medium mb-2">{rarity}</p>
+          <Badge variant="secondary" className="w-fit">
+            {rarity}
+          </Badge>
         )}
-        {currentPrice && (
+      </CardHeader>
+      {currentPrice && (
+        <CardContent className="pt-0">
           <div className="flex justify-between items-center">
-            <span className="text-lg font-bold text-green-600">
+            <span className="text-2xl font-bold text-green-600">
               ${currentPrice.toFixed(2)}
             </span>
             {lastUpdated && (
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-muted-foreground">
                 Updated {lastUpdated}
               </span>
             )}
           </div>
+        </CardContent>
+      )}
+      <CardFooter className="flex gap-2 pt-0">
+        <Button variant="outline" size="sm" asChild className="flex-1">
+          <Link href={`/cards/${id}`}>View</Link>
+        </Button>
+        {onAddToCollection && (
+          <Button size="sm" onClick={() => onAddToCollection(id)} className="flex-1">
+            Add to Collection
+          </Button>
         )}
-        <div className="mt-3 flex space-x-2">
-          <a
-            href={`/cards/${id}`}
-            className="flex-1 bg-gray-100 text-gray-800 px-3 py-2 rounded text-center text-sm hover:bg-gray-200 transition-colors"
-          >
-            View
-          </a>
-          {onAddToCollection && (
-            <button
-              onClick={() => onAddToCollection(id)}
-              className="flex-1 bg-blue-100 text-blue-800 px-3 py-2 rounded text-center text-sm hover:bg-blue-200 transition-colors"
-            >
-              Add to Collection
-            </button>
-          )}
-        </div>
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 }
